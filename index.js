@@ -9,6 +9,11 @@ app.get("/", (req, res) => {
   res.json({ msg: "Welcome" });
 });
 
+const userRoute = require("./routes/userRoute");
+const productRoute = require("./routes/productsRoute");
+const categoryRoute = require("./routes/categoriesRoute");
+const orderRoute = require("./routes/ordersRoute");
+
 app.use("/users", userRoute);
 app.use("/products", productRoute);
 app.use("/categories", categoryRoute);
