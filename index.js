@@ -11,13 +11,11 @@ app.get("/", (req, res) => {
 
 const userRoute = require("./routes/userRoute");
 const productRoute = require("./routes/productsRoute");
-const categoryRoute = require("./routes/categoriesRoute");
-const orderRoute = require("./routes/ordersRoute");
+
 
 app.use("/users", userRoute);
 app.use("/products", productRoute);
-app.use("/categories", categoryRoute);
-app.use("/orders", orderRoute);
+
 
 app.listen(app.get("port"), () => {
   console.log(`Listening for calls on port ${app.get("port")}`);
