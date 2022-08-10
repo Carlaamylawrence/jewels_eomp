@@ -1,4 +1,3 @@
-const bcrypt = require("bcryptjs");
 const con = require("../../lib/db_connection");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -19,7 +18,7 @@ async function getUsers(req, res) {
 async function getSingleUser(req, res) {
   try {
     con.query(
-      `SELECT * FROM users where user_id= ${req.user.id} `,
+      `SELECT * FROM users where id= ${req.params.id} `,
       (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -31,6 +30,7 @@ async function getSingleUser(req, res) {
   }
 }
 
+// GET ALL PRODUCTS
 async function getProducts(req, res) {
   try {
     con.query("SELECT * FROM products", (err, result) => {
@@ -42,10 +42,11 @@ async function getProducts(req, res) {
   }
 }
 
+// GET SINGLE PRODUCT BY ID
 async function SingleProduct(req, res) {
   try {
     con.query(
-      `SELECT * FROM products where product_id= ${req.params.id} `,
+      `SELECT * FROM products where id = ${req.params.id} `,
       (err, result) => {
         if (err) throw err;
         res.send(result);

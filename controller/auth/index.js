@@ -35,14 +35,14 @@ async function Login(req, res) {
           // The information the should be stored inside token
           const payload = {
             user: {
-              user_id: result[0].user_id,
-              full_name: result[0].full_name,
+              id: result[0].id,
+              fullname: result[0].fullname,
               email: result[0].email,
-              user_type: result[0].user_type,
+              userRole: result[0].userRole,
               phone: result[0].phone,
               country: result[0].country,
-              billing_address: result[0].billing_address,
-              default_shipping_address: result[0].default_shipping_address,
+              created: result[0].created,
+              cart: result[0].cart,
             },
           };
           // Creating a token and setting expiry date
@@ -70,39 +70,46 @@ async function Login(req, res) {
 async function Register(req, res) {
   try {
     let sql = "INSERT INTO users SET ?";
-    const {
-      full_name,
-      email,
-      phone,
-      user_type,
-      country,
-      billing_address,
-      default_shipping_address,
-    } = req.body;
+    let date = new Date().toISOString().slice(0, 19).replace("T", " ");
+    const { fullname, email, password, userRole, phone, created, cart } =
+      req.body;
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(req.body.password, salt);
     let user = {
-      full_name,
+      fullname,
       email,
-      // We sending the hash value to be stored witin the table
       password: hash,
-      user_type,
+      userRole,
       phone,
-      country,
-      billing_address,
-      default_shipping_address,
+      created: date,
+      cart,
     };
     con.query(sql, user, (err, result) => {
       if (err) throw err;
       console.log(result);
-      res.send(`User ${(user.full_name, user.email)} created successfully`);
+      res.send(`User ${(user.fullname, user.email)} created successfully`);
     });
   } catch (error) {
     console.log(error);
   }
 }
 
+async function Verify(req, res) {
+  const token = req.header("x-auth-token");
+  jwt.verify(token, process.env.jwtSecret, (error, decodedToken) => {
+    if (error) {
+      res.status(401).json({
+        msg: "Unauthorized Access!",
+      });
+    } else {
+      res.status(200);
+      res.send(decodedToken);
+    }
+  });
+}
+
 module.exports = {
   Login,
   Register,
+  Verify,
 };

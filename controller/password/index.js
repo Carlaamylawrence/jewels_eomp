@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const con = require("../../lib/db_connection");
-const jwt = require("jsonwebtoken");
+
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 
@@ -33,13 +33,13 @@ async function forgotPsw(req, res) {
 
           subject: "Password Reset",
           html: `<div>
-            <h3>Hi ${result[0].full_name},</h3>
+            <h3>Hi ${result[0].fullname},</h3>
             <br>
             <h4>Click link below to reset your password</h4>
 
             <a href="https://thisisyourstore.herokuapp.com/resetPsw.html">
               Click Here to Reset Password
-              user_id = ${result[0].user_id}
+              user_id = ${result[0].id}
             </a>
 
             <br>
