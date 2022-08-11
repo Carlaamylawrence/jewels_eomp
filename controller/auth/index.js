@@ -71,11 +71,12 @@ async function Register(req, res) {
   try {
     let sql = "INSERT INTO users SET ?";
     let date = new Date().toISOString().slice(0, 19).replace("T", " ");
-    const { fullname, email, password, userRole, phone, created, cart } =
+    const { id, fullname, email, password, userRole, phone, created, cart } =
       req.body;
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(req.body.password, salt);
     let user = {
+      id,
       fullname,
       email,
       password: hash,

@@ -64,4 +64,16 @@ router.get("/:id/cart", (req, res) => {
   return userController.getCartItems(req, res);
 });
 
+router.post("/:id/cart", (req, res) => {
+  return userController.addCartItem(req, res);
+});
+
+router.delete(":/id/cart", (req, res) => {
+  return userController.deleteCartItem(req, res);
+});
+
+router.put(":/id/cart", (req, res) => {
+  return userController.editCart(req, res);
+});
+
 module.exports = router;

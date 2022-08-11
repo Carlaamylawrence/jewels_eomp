@@ -69,7 +69,7 @@ async function getCartItems(req, res) {
       let users = { id: req.params.id };
       con.query(sql, users, (err, result) => {
         if (err) throw err;
-        res.send(result);
+        res.send(result[0].cart);
       });
     } catch (error) {
       console.log(error);
@@ -79,15 +79,67 @@ async function getCartItems(req, res) {
   }
 }
 
-// async function addCartItem(req,res) {
-//   let cart =[]
-//   try {
-//     let sql = "Insert into cart"
-//   }
-// }
+async function addCartItem(req, res) {
+  let cart = [];
+  con.query(
+    `SELECT * FROM users WHERE id = ${req.params.id}`,
+    (err, result) => {
+      if (err) throw err;
+      user_id = result[0].id;
+      let item = {
+        title: req.body.title,
+        img: req.body.img,
+        thumbnail: req.body.thumbnail,
+        price: req.body.price,
+        color: req.body.color,
+        description: req.body.description,
+        quantity: req.body.quantity,
+        category: req.body.category,
+        sku: req.body.sku,
+        available: req.body.available,
+        user_id: req.body.user_id,
+      };
+      if (result[0].cart !== "") {
+        cart = JSON.parse(result[0].cart);
+      }
+      cart.push(item);
+      con.query(
+        `UPDATE users SET cart = ? WHERE id = ${req.params.id}`,
+        JSON.stringify(cart),
+        (err, result) => {
+          if (err) throw err;
+          res.send(result);
+        }
+      );
+    }
+  );
+}
+
+async function deleteCartItem(req, res) {
+  let sql = "Delete from products WHERE ?";
+  let product = { id: req.params.id };
+  con.query(sql, product, (err, result) => {
+    if (result[0].cart !== "") {
+      cart = JSON.parse(result[0].cart);
+    }
+    cart.push(item);
+    con.query(
+      `UPDATE users SET cart = ? WHERE id = ${req.params.id}`,
+      JSON.stringify(cart),
+      (err, result) => {
+        if (err) throw err;
+        res.send(result);
+      }
+    );
+  });
+}
+async function editCart(req, res) {}
 module.exports = {
   editUser,
   deleteUser,
   addUser,
   getCartItems,
+  addCartItem,
+  deleteCartItem,
+  editCart,
 };
