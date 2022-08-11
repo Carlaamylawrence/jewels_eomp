@@ -87,6 +87,7 @@ async function addCartItem(req, res) {
       if (err) throw err;
       user_id = result[0].id;
       let item = {
+        id: req.body.id,
         title: req.body.title,
         img: req.body.img,
         thumbnail: req.body.thumbnail,
@@ -116,13 +117,14 @@ async function addCartItem(req, res) {
 }
 
 async function deleteCartItem(req, res) {
+  let cart = [];
   let sql = "Delete from products WHERE ?";
   let product = { id: req.params.id };
   con.query(sql, product, (err, result) => {
     if (result[0].cart !== "") {
       cart = JSON.parse(result[0].cart);
     }
-    cart.push(item);
+    cart.push(sql);
     con.query(
       `UPDATE users SET cart = ? WHERE id = ${req.params.id}`,
       JSON.stringify(cart),
@@ -133,6 +135,7 @@ async function deleteCartItem(req, res) {
     );
   });
 }
+
 async function editCart(req, res) {}
 module.exports = {
   editUser,
