@@ -1,5 +1,6 @@
 const con = require("../../lib/db_connection");
 const bcrypt = require("bcryptjs");
+const { addProduct } = require("../admin");
 require("dotenv").config();
 
 // ADD USER
@@ -63,7 +64,7 @@ async function deleteUser(req, res) {
 
 async function getCartItems(req, res) {
   let cart = [];
-  if (cart !== 0) {
+  if (cart.length !== 0) {
     try {
       let sql = "Select cart FROM users WHERE ?";
       let users = { id: req.params.id };
@@ -99,6 +100,7 @@ async function addCartItem(req, res) {
         sku: req.body.sku,
         available: req.body.available,
         user_id: req.body.user_id,
+        qty: req.body.qty,
       };
       if (result[0].cart !== "") {
         cart = JSON.parse(result[0].cart);
@@ -116,33 +118,77 @@ async function addCartItem(req, res) {
   );
 }
 
-async function deleteCartItem(req, res) {
-  let cart = [];
-  let sql = "Delete from products WHERE ?";
-  let product = { id: req.params.id };
-  con.query(sql, product, (err, result) => {
-    if (result[0].cart !== "") {
-      cart = JSON.parse(result[0].cart);
-    }
-    cart.push(sql);
-    con.query(
-      `UPDATE users SET cart = ? WHERE id = ${req.params.id}`,
-      JSON.stringify(cart),
-      (err, result) => {
-        if (err) throw err;
-        res.send(result);
-      }
-    );
+// async function deleteCartItem(req, res) {
+//   let cart = [];
+//   let sql = "Delete from products WHERE ?";
+//   let product = { id: req.params.id };
+//   con.query(sql, product, (err, result) => {
+//     if (result[0].cart !== "") {
+//       cart = JSON.parse(result[0].cart);
+//     }
+//     cart.push(sql);
+//     con.query(
+//       `UPDATE users SET cart = ? WHERE id = ${req.params.id}`,
+//       JSON.stringify(cart),
+//       (err, result) => {
+//         if (err) throw err;
+//         res.send(result);
+//       }
+//     );
+//   });
+// }
+
+async function clearCartItems(req, res) {
+  // let cart;
+  // let sql = "update from users WHERE ?";
+  // let users = { id: req.params.id };
+  // con.query(sql, users, (err, result) => {
+  //   if (result[0].cart !== "") {
+  //     cart = [];
+  //   }
+  //   cart.push(sql),
+  //     (err, result) => {
+  //       if (err) throw err;
+  //       res.send(result);
+  //     };
+  // });
+
+  let sql = `Select * from users where ?`;
+  let user = {
+    id: req.params.id,
+  };
+  con.query(sql, user, (err, result) => {
+    if (err) throw err;
+    let updateCart = `Update users set ?`;
+    const cart = {
+      cart: null,
+    };
+    con.query(updateCart, cart, (err, result) => {
+      if (err) throw err;
+      res.send(result);
+    });
   });
 }
 
-async function editCart(req, res) {}
 module.exports = {
   editUser,
   deleteUser,
   addUser,
   getCartItems,
   addCartItem,
-  deleteCartItem,
-  editCart,
+  clearCartItems,
 };
+
+// setCart(state,cart){
+//   state.cart=cart
+// }
+
+// fetch()
+// body{
+//   product_id,
+//   qty
+// }
+
+// getCartItems(cart){
+//   return state.cart
+// }

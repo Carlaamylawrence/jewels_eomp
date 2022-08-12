@@ -40,7 +40,6 @@ async function Login(req, res) {
               email: result[0].email,
               userRole: result[0].userRole,
               phone: result[0].phone,
-              country: result[0].country,
               created: result[0].created,
               cart: result[0].cart,
             },
