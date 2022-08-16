@@ -29,11 +29,11 @@ async function addProduct(req, res) {
       console.log(error);
     }
   else {
-    res.send("Not Allowed");
+    res.status(400).json({msg: "Not allowed"})
   }
 }
 
-// DELETE PRODUCT
+// EDIT PRODUCT
 async function editProduct(req, res) {
   if (req.user.userRole === "admin") {
     try {
