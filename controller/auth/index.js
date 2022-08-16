@@ -71,7 +71,7 @@ async function Register(req, res) {
     let sql =
       "INSERT INTO users(fullname, email, password, userRole, phone, created) VALUES( ?,?,?,?,?,?) ";
     let date = new Date().toISOString().slice(0, 10);
-    const { fullname, email, password, userRole, phone } = req.body;
+    let { fullname, email, password, userRole, phone } = req.body;
     let cart;
     if (userRole === "" || userRole === null) {
       userRole = "user";
