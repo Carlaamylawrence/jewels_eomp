@@ -68,8 +68,7 @@ async function Login(req, res) {
 // REGISTER FUNCTION
 async function Register(req, res) {
   try {
-    let sql =
-      `INSERT INTO users(fullname, email, password, userRole, phone, created) VALUES(?);`;
+    let sql = `INSERT INTO users(fullname, email, password, userRole, phone, created) VALUES(? , ? , ? , ? , ? , ?);`;
     let date = new Date().toISOString().slice(0, 10);
     let { fullname, email, password, userRole, phone } = req.body;
     let cart;
@@ -86,14 +85,25 @@ async function Register(req, res) {
       phone: phone,
       created: date,
     };
-    con.query(sql, user, (err, result) => {
-      if (err) throw err;
-      console.log(result);
-      // res.json(`User ${(user.fullname, user.email)} created successfully`);
-      res.json({
-        msg: "Regitration Successful"
-      });
-    });
+    con.query(
+      sql,
+      [
+        user.fullname,
+        user.email,
+        user.password,
+        user.userRole,
+        user.phone,
+        user.created,
+      ],
+      (err, result) => {
+        if (err) throw err;
+        console.log(result);
+        // res.json(`User ${(user.fullname, user.email)} created successfully`);
+        res.json({
+          msg: "Regitration Successful",
+        });
+      }
+    );
   } catch (error) {
     console.log(error);
   }
