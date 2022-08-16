@@ -64,8 +64,8 @@ router.get("/:id/cart", (req, res) => {
   return userController.getCartItems(req, res);
 });
 
-router.patch("/:id/cart/add", (req, res) => {
-  return userController.addCartItem(req, res);
+router.patch("/:id", (req, res) => {
+  return userController.editUser(req, res);
 });
 
 router.delete(":/id/cart", (req, res) => {
