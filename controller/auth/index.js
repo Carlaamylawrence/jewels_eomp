@@ -69,24 +69,29 @@ async function Login(req, res) {
 async function Register(req, res) {
   try {
     let sql =
-      "INSERT INTO users(fullname, email, password, userRole, phone, created)";
-    let date = new Date().toISOString().slice(0, 10);
-    let { fullname, email, password, userRole, phone } = req.body;
-    let cart;
+      `INSERT INTO users(fullname, email, password, userRole, phone, created) VALUES(? , ? , ? , ? , ? , ?);`;
+    // let date = 
+    let bd = req.body;
+  //  let cart = {
+  //    cart: null,
+  //  };
+   let date = {
+     date: new Date().toISOString().slice(0, 10)
+   };
     if (userRole === "" || userRole === null) {
       userRole = "user";
     }
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
     let user = {
-      fullname,
-      email,
+      fullname: fullname,
+      email: email,
       password: hash,
-      userRole,
-      phone,
+      userRole: userRole,
+      phone: phone,
       created: date,
     };
-    con.query(sql, user, (err, result) => {
+    con.query(sql, [bd.fullname, bd.email, bd.password, bd.userRole, bd.phone, date.date], (err, result) => {
       if (err) throw err;
       console.log(result);
       res.send(`User ${(user.fullname, user.email)} created successfully`);
