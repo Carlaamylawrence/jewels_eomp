@@ -69,11 +69,11 @@ async function Login(req, res) {
 async function Register(req, res) {
   try {
     let sql =
-      "INSERT INTO users (fullname, email, password, userRole, phone, created) VALUES ( ?,?,?,?,?,?) ";
+      "INSERT INTO users(fullname, email, password, userRole, phone, created) VALUES( ?,?,?,?,?,?) ";
     let date = new Date().toISOString().slice(0, 10);
     const { fullname, email, password, userRole, phone } = req.body;
     let cart;
-    if (userRole === "") {
+    if (userRole === "" || userRole === null) {
       userRole = "user";
     }
     const salt = bcrypt.genSaltSync(10);
