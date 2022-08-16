@@ -69,9 +69,9 @@ async function Login(req, res) {
 async function Register(req, res) {
   try {
     let sql =
-      "INSERT INTO users (id, fullname, email, password, userRole, phone) VALUES ( ?,?,?,?,?,?) ";
+      "INSERT INTO users (fullname, email, password, userRole, phone, created) VALUES ( ?,?,?,?,?,?) ";
     let date = new Date().toISOString().slice(0, 10);
-    const { id, fullname, email, password, userRole, phone } = req.body;
+    const { fullname, email, password, userRole, phone } = req.body;
     let cart;
     if (userRole === "") {
       userRole = "user";
@@ -79,14 +79,12 @@ async function Register(req, res) {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
     let user = {
-      id,
       fullname,
       email,
       password: hash,
       userRole,
       phone,
       created: date,
-      cart,
     };
     con.query(sql, user, (err, result) => {
       if (err) throw err;
