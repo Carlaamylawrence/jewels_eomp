@@ -70,14 +70,9 @@ async function Register(req, res) {
   try {
     let sql =
       `INSERT INTO users(fullname, email, password, userRole, phone, created) VALUES(? , ? , ? , ? , ? , ?);`;
-    // let date = 
-    let bd = req.body;
-  //  let cart = {
-  //    cart: null,
-  //  };
-   let date = {
-     date: new Date().toISOString().slice(0, 10)
-   };
+    let date = new Date().toISOString().slice(0, 10);
+    let { fullname, email, password, userRole, phone } = req.body;
+    let cart;
     if (userRole === "" || userRole === null) {
       userRole = "user";
     }
@@ -91,10 +86,13 @@ async function Register(req, res) {
       phone: phone,
       created: date,
     };
-    con.query(sql, [bd.fullname, bd.email, bd.password, bd.userRole, bd.phone, date.date], (err, result) => {
+    con.query(sql, user, (err, result) => {
       if (err) throw err;
       console.log(result);
-      res.send(`User ${(user.fullname, user.email)} created successfully`);
+      // res.json(`User ${(user.fullname, user.email)} created successfully`);
+      res.json({
+        msg: "Regitration Successful"
+      });
     });
   } catch (error) {
     console.log(error);
