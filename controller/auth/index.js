@@ -69,7 +69,7 @@ async function Login(req, res) {
 async function Register(req, res) {
   try {
     let sql =
-      "INSERT INTO users(fullname, email, password, userRole, phone, created) VALUES( ?,?,?,?,?,?) ";
+      "INSERT INTO users(fullname, email, password, userRole, phone, created)";
     let date = new Date().toISOString().slice(0, 10);
     let { fullname, email, password, userRole, phone } = req.body;
     let cart;
