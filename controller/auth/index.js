@@ -17,7 +17,7 @@ async function Login(req, res) {
       if (result.length === 0) {
         res.status(400).json({
           status: "error",
-          error: "Email Not Found",
+          msg: "Email Not Found",
         });
       } else {
         const isMatch = await bcrypt.compare(
@@ -28,9 +28,9 @@ async function Login(req, res) {
         if (!isMatch) {
           res.status(400).json({
             status: "error",
-            error: "Password Incorrect",
+            msg: "Password Incorrect",
           });
-          console.log("isMatch");
+          console.log(isMatch);
         } else {
           // The information the should be stored inside token
           const payload = {
@@ -54,7 +54,11 @@ async function Login(req, res) {
             (err, token) => {
               if (err) throw err;
 
-              res.json({ token });
+              res.json({ 
+                msg: "Login Successful",
+                user: payload.user,
+                token : token
+               });
             }
           );
         }
@@ -97,7 +101,7 @@ async function Register(req, res) {
       ],
       (err, result) => {
         if (err) throw err;
-        console.log(result);
+        // console.log(result);
         // res.json(`User ${(user.fullname, user.email)} created successfully`);
         res.json({
           msg: "Regitration Successful",
