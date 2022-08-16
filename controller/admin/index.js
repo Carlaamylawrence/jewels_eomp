@@ -5,7 +5,7 @@ require("dotenv").config();
 
 // ADD PRODUCT
 async function addProduct(req, res) {
-  if (req.user.userRole === "admin")
+
     try {
       let date = new Date().toISOString().slice(0, 19).replace("T", " ");
       let sql = "INSERT INTO products SET ?";
@@ -28,9 +28,7 @@ async function addProduct(req, res) {
     } catch (error) {
       console.log(error);
     }
-  else {
-    res.status(400).json({msg: "Not allowed"})
-  }
+
 }
 
 // EDIT PRODUCT
