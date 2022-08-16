@@ -68,7 +68,8 @@ async function Login(req, res) {
 // REGISTER FUNCTION
 async function Register(req, res) {
   try {
-    let sql = "INSERT INTO users SET ?";
+    let sql =
+      "INSERT INTO users (id, fullname, email, password, userRole, phone) VALUES ( ?,?,?,?,?,?) ";
     let date = new Date().toISOString().slice(0, 10);
     const { id, fullname, email, password, userRole, phone } = req.body;
     let cart;
