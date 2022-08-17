@@ -33,7 +33,7 @@ async function addProduct(req, res) {
 
 // EDIT PRODUCT
 async function editProduct(req, res) {
-  if (req.user.userRole === "admin") {
+  if (req.user.userRole === "admin" || req.user.userRole === "user") {
     try {
       let sql = "SELECT * FROM products WHERE ? ";
       let product = { id: req.params.id };
