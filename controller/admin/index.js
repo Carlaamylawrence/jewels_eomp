@@ -4,32 +4,70 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 // ADD PRODUCT
+// async function addProduct(req, res) {
+
+//     try {
+//       let date = new Date().toISOString().slice(0, 19).replace("T", " ");
+//       let sql = "INSERT INTO products SET ?";
+//       let product = ({
+//         title: req.body.title,
+//         img: req.body.img,
+//         thumbnail: req.body.thumbnail,
+//         price: req.body.price,
+//         color: req.body.color,
+//         description: req.body.description,
+//         quantity: req.body.quantity,
+//         category: req.body.category,
+//         sku: req.body.sku,
+//         available: req.body.available,
+//       } = req.body);
+//       con.query(sql, product, (err, result) => {
+//         if (err) throw err;
+//         res.send(result);
+//       });
+//     };
+// }
+
+// ADD PRODUCT
 async function addProduct(req, res) {
-
-    try {
-      let date = new Date().toISOString().slice(0, 19).replace("T", " ");
-      let sql = "INSERT INTO products SET ?";
-      let product = ({
-        title: req.body.title,
-        img: req.body.img,
-        thumbnail: req.body.thumbnail,
-        price: req.body.price,
-        color: req.body.color,
-        description: req.body.description,
-        quantity: req.body.quantity,
-        category: req.body.category,
-        sku: req.body.sku,
-        available: req.body.available,
-      } = req.body);
-      con.query(sql, product, (err, result) => {
+  const {
+    title,
+    img,
+    thumbnail,
+    price,
+    color,
+    description,
+   quantity,
+    category,
+    sku,
+    available,
+    user_id,
+  } = req.body;
+  try {
+    con.query(
+      
+      `INSERT INTO products (
+        title,
+        img,
+        thumbnail,
+        price,
+        color,
+        description,
+       quantity,
+        category,
+        sku,
+        available,
+        user_id) VALUES ( "${title}", ${img}", ${thumbnail}", "${price}", ${color}", ${quantity}", "${description}", "${quantity}", "${category}", ${sku}", ${price}",${available}", "${user_id}" )`,
+      (err, result) => {
         if (err) throw err;
-        res.send(result);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-
-}
+        res.send("product successfully created");
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }}
+  
 
 // EDIT PRODUCT
 async function editProduct(req, res) {

@@ -11,7 +11,7 @@ router.get("/", (req, res) => {
 });
 
 //ADD A PRODUCT
-router.post("/", middleware, (req, res) => {
+router.post("/",  (req, res) => {
   return adminController.addProduct(req, res);
 });
 
